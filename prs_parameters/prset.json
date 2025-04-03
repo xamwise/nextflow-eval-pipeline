@@ -1,0 +1,18 @@
+{
+    "base": "",
+    "pheno": "",
+    "target": "",
+    "out": "",
+    "snp": "",
+    "a1": "",  
+    "a2": "",
+    "stat": "",
+    "beta": "",
+    "pvalue": "",
+    "binary_target": "",
+    "bar_levels": "",
+    "no_full": "",
+    "fastscore": "",
+    "bed": "",
+    "multi-plot": 10
+}

@@ -1,0 +1,19 @@
+{
+    "ref_dir": "",
+    "sst_file": "",
+    "bim_prefix": "",
+    "n_gwas": ,
+    "pop": ,
+    "out_dir": "",
+    "out_name": ,
+    "a": ,
+    "b": ,
+    "phi": ,
+    "n_iter": ,
+    "n_burnin": ,
+    "thin": ,
+    "chrom": ,
+    "meta": ,
+    "write_pst": ,
+    "seed": 
+}

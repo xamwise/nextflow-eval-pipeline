@@ -1,0 +1,19 @@
+
+{
+    "ref_dir": "",
+    "bim_prefix": "",
+    "sst_file": "",
+    "n_gwas": ,
+    "out_dir": "",
+    "a": ,
+    "b": ,
+    "phi": ,
+    "n_iter": ,
+    "n_burnin": ,
+    "thin": ,
+    "chrom": ,
+    "beta_std": ,
+    "write_psi": ,
+    "write_posterior_samples": ,
+    "seed":
+}
