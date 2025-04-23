@@ -5,7 +5,7 @@ process quality_control{
     publishDir "out/${params.run_id}/quality_control", mode: 'copy'
 
     input:
-    path input
+    val input
     val out
     val maf
     val mind
@@ -13,17 +13,16 @@ process quality_control{
     val hwe
 
     output:
-    path('quality_control*.html'), emit: prs_csx, optional: true
+    val out
 
     script:
     """
-    plink --bfile ($input) \\
-        --maf $maf \\
-        --mind $mind \\
+    plink --bfile $input \\
         --geno $geno \\
-        --hwe $hwq \\
-        --make-just-bim \\
-        --make-just-fam \\
-        --out ($out).qc
+        --mind $mind \\
+        --maf $maf \\
+        --hwe $hwe \\
+        --make-bed \\
+        --out $out
     """
 }

@@ -9,13 +9,16 @@ include { ldpred_funct } from '../modules/local/ldpred_funct'
 
 include { baseline } from '../modules/local/baseline' 
 include { sct } from '../modules/local/sct'
-// include { ldpred2 } from '../modules/local/ldpred2'
-// include ( lassosum ) from '../modules/local/lassosum'
+include { ldpred2 } from '../modules/local/ldpred2'
+include ( lassosum ) from '../modules/local/lassosum'
 // include { lassosum2 } from '../modules/local/lassosum2'
-// include { gaudi } from '../modules/local/gaudi'
+include { gaudi } from '../modules/local/gaudi'
+
 
 
 workflow {
+    quality_control_sum()
+    quality_control()
     prsice()
     sbayesr()
     prs_csx()
@@ -27,4 +30,5 @@ workflow {
     ldpred2()
     lassosum()
     gaudi()
+    baseline()
 }

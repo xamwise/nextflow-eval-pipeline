@@ -24,23 +24,28 @@ process prset {
 
     script:
     """
-    Rscript PRSet.R \\
-        --prsice PRSice_mac \\
-        --base $base  \
+    
+
+    Rscript ./PRSice.R \\
+        --prsice PRSice_mac  \\
+        --base $base \\
         --target $target \\
-        --snp $snp \\
         --A1 $a1 \\
         --A2 $a2 \\
+        --snp MarkerName \\
+        --pvalue $pvalue \\
         --stat $stat \\
         --beta $beta \\
-        --pvalue $pvalue \\
-        --pheno $pheno \\
         --binary-target $binary_target \\
-        --bar-levels $bar_levels \\
-        --no-full $no_full \\
-        --fastscore $fastscore \\
-        --bed $bed \\
-        --multi-plot 10 \\
+        --pheno Target_Data/TAR.height \\
+        --cov Target_Data/TAR.covariate \\
+        --out Height.set \\
+        --gtf $gtf \\
+        --wind-5 5kb \\
+        --wind-3 1kb \\
+        --msigdb $msigdb \\
+        --multi-plot $quantiles \\
+        --set-perm 1000 \\
         --out $out 
     """
 
