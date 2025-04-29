@@ -16,7 +16,7 @@ option_list = list(
               help="phenotype file name", metavar="character"),
   make_option(c("-c", "--cov"), type="character", default=NULL,
               help="covariate name", metavar="character"),
-  make_option(c("-p", "--pcs"), type="character", default=NULL,
+  make_option(c("-z", "--pcs"), type="character", default=NULL,
               help="principal component analysis file name", metavar="character"), 
   make_option(c("-l", "--ld"), type="character", default=NULL, 
               help="LD file name", metavar="character"),
@@ -25,13 +25,15 @@ option_list = list(
   make_option(c("-t", "--trait"), type="character", default=NULL, 
               help="binary or quantitative trait options are bin and quant", metavar="character"),
   make_option(c("-m", "--model"), type="character", default=NULL, 
-              help="model options are inf, grid and auto", metavar="character")
+              help="model options are inf, grid and auto", metavar="character"),
+  make_option(c("-o", "--out"), type="character", default=NULL,
+              help="results data file name", metavar="character")
 )            
  
 opt_parser = OptionParser(option_list=option_list)
 opt = parse_args(opt_parser)
 
-if (is.null(opt$file)){
+if (is.null(opt$bed)){
   print_help(opt_parser)
   stop("At least one argument must be supplied (input file).n", call.=FALSE)
 }
@@ -80,7 +82,11 @@ sumstats <- sumstats[sumstats$rsid%in% info$rsid,]
 # Get maximum amount of cores
 NCORES <- nb_cores()
 # Open a temporary file
-tmp <- tempfile(tmpdir = "tmp-data")
+# split string to get the directory
+# and the file name
+file_dir <- strsplit(opt$bed, ".")[[1]]
+
+tmp <- tempfile(tmpdir = paste(file_dir, "tmp-data", sep = "/"))
 on.exit(file.remove(paste0(tmp, ".sbk")), add = TRUE)
 # Initialize variables for storing the LD score and LD matrix
 corr <- NULL
@@ -180,7 +186,7 @@ if (opt$model == "inf"){
   beta_inf <- snp_ldpred2_inf(corr, df_beta, h2 = h2_est)
 
   if(is.null(obj.bigSNP)){
-    obj.bigSNP <- snp_attach("EUR.QC.rds")
+    obj.bigSNP <- snp_attach(paste(opt$bed, "rds", sep = "."))
   }
   genotype <- obj.bigSNP$genotypes
   # calculate PRS for all samples
@@ -216,7 +222,7 @@ if (opt$model == "inf"){
       snp_ldpred2_grid(corr, df_beta, grid.param, ncores = NCORES)
 
   if(is.null(obj.bigSNP)){
-      obj.bigSNP <- snp_attach("EUR.QC.rds")
+      obj.bigSNP <- snp_attach(paste(opt$bed, "rds", sep = "."))
   }
   genotype <- obj.bigSNP$genotypes
   # calculate PRS for all samples
@@ -256,7 +262,7 @@ if (opt$model == "inf"){
       auto$beta_est)
 
   if(is.null(obj.bigSNP)){
-      obj.bigSNP <- snp_attach("EUR.QC.rds")
+      obj.bigSNP <- snp_attach(paste(opt$bed, "rds", sep = "."))
   }
   genotype <- obj.bigSNP$genotypes
   # calculate PRS for all samples
@@ -295,3 +301,9 @@ if (opt$model == "inf"){
   stop("Model type not recognized. Please specify either 'inf', 'grid' or 'auto'.")
 }
 
+# Save the results to a file
+if (is.null(opt$out)) {
+  stop("Output file name must be specified.")
+} else {
+  fwrite(result, opt$out, sep="\t")
+}

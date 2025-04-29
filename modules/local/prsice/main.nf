@@ -5,39 +5,35 @@ process prsice {
     publishDir "out/${params.run_id}/prsice", mode: 'copy'
 
     input:
-    path base, pheno, target, out
-    val snp
+    val base
+    val pheno
+    val target
+    val cov
+    val out
     val a1
     val a2
     val stat
-    val beta
-    val pvalue
     val binary_target
-    val bar_levels
-    val no_full
-    val fastscore
-
+    val base_maf
+    val base_info
 
     output:
-    path('prsice*.html'), emit: prs_csx, optional: true
+    val out
 
     script:
     """
-    Rscript PRSice.R \\
-        --prsice PRSice_mac \\
+    Rscript /Users/max/Desktop/PRS_Models/nextflow-eval-pipeline/bin/PRSice.R \\
+        --prsice /Users/max/Desktop/PRS_Models/nextflow-eval-pipeline/bin/PRSice_mac \\
         --base $base  \
         --target $target \\
-        --snp $snp \\
         --A1 $a1 \\
         --A2 $a2 \\
         --stat $stat \\
-        --beta $beta \\
-        --pvalue $pvalue \\
         --pheno $pheno \\
+        --cov $cov \\
         --binary-target $binary_target \\
-        --bar-levels $bar_levels \\
-        --no-full $no_full \\
-        --fastscore $fastscore \\
+        --base-maf $base_maf \\
+        --base-info $base_info \\
         --out $out 
     """
 

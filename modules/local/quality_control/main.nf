@@ -16,13 +16,27 @@ process quality_control{
     val out
 
     script:
+//     """
+//     plink --bfile $input \\
+//         --geno $geno \\
+//         --mind $mind \\
+//         --maf $maf \\
+//         --hwe $hwe \\
+//         --write-snplist \\
+//         --make-just-fam \\
+//         --out $out
+//     """
+// }
+
     """
-    plink --bfile $input \\
-        --geno $geno \\
-        --mind $mind \\
-        --maf $maf \\
-        --hwe $hwe \\
-        --make-bed \\
-        --out $out
+    plink \\
+    --bfile $input \\
+    --maf $maf \\
+    --hwe $hwe \\
+    --geno $geno \\
+    --mind $mind \\
+    --write-snplist \\
+    --make-just-fam \\
+    --out $out
     """
 }

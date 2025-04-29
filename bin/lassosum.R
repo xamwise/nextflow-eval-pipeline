@@ -1,4 +1,4 @@
-# install.packages(c("devtools","RcppArmadillo", "data.table", "Matrix"), dependencies=TRUE)
+#install.packages(c("devtools","RcppArmadillo", "data.table", "Matrix"), dependencies=TRUE)
 # install_github("tshmak/lassosum")
 
 library(devtools)
@@ -21,20 +21,22 @@ option_list = list(
               help="phenotype file name", metavar="character"),
   make_option(c("-c", "--cov"), type="character", default=NULL,
               help="covariate name", metavar="character"),
-  make_option(c("-p", "--pcs"), type="character", default=NULL,
+  make_option(c("-z", "--pcs"), type="character", default=NULL,
               help="principal component analysis file name", metavar="character"), 
-  make_option(c("-", "--ld"), type="character", default=NULL, 
-              help="ld file name", metavar="character"),
+  # make_option(c("-", "--ld"), type="character", default=NULL, 
+  #             help="ld file name", metavar="character"),
   make_option(c("-f", "--sum_stats"), type="character", default=NULL, 
-              help="additional data file name", metavar="character")
+              help="additional data file name", metavar="character"),
+    make_option(c("-o", "--out"), type="character", default=NULL, 
+              help="results data file name", metavar="character")
 )  
 
 opt_parser = OptionParser(option_list=option_list)
 opt = parse_args(opt_parser)
 
-if (is.null(opt$file)){
+if (is.null(opt$bed)){
   print_help(opt_parser)
-  stop("At least one argument must be supplied (input file).n", call.=FALSE)
+  stop("At least one argument must be supplied (input bed).n", call.=FALSE)
 }
 
 
@@ -53,9 +55,9 @@ cov <- merge(covariate, pcs)
 
 # We will need the EUR.hg19 file provided by lassosum 
 # which are LD regions defined in Berisa and Pickrell (2015) for the European population and the hg19 genome.
-ld.file <- opt$ld
+ld.file <- "EUR.hg19"
 # output prefix
-prefix <- "results"
+prefix <- opt$out
 # Read in the target phenotype file
 target.pheno <- fread(opt$pheno)[,c("FID", "IID", "Height")]
 # Read in the summary statistics
@@ -84,7 +86,22 @@ out <- lassosum.pipeline(
   test.bfile = bfile,
   LDblocks = ld.file, 
   cluster=cl
+)
 # Store the R2 results
 target.res <- validate(out, pheno = as.data.frame(target.pheno), covar=as.data.frame(cov))
 # Get the maximum R2
 r2 <- max(target.res$validation.table$value)^2
+
+# writte out the results
+write.table(target.res$validation.table, 
+            file=paste0(prefix, "_lassosum.txt"), 
+            sep="\t", 
+            row.names=F, 
+            quote=F)
+
+# write maximum R2
+write.table(r2, 
+            file=paste0(prefix, "_lassosum_r2.txt"), 
+            sep="\t", 
+            row.names=F, 
+            quote=F)

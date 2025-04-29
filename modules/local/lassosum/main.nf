@@ -1,24 +1,23 @@
-process lassosum {
+process lassosum{
 
     tag "${name}"
     label 'process_single'
     publishDir "out/${params.run_id}/lassosum", mode: 'copy'
 
     input:
-    path bed, pheno, cov, pcs, ld, sum_stats
+    val bed
+    val pheno
+    val cov
+    val pcs
+    val sum_stats
+    val out
 
     output:
-    path('lassosum*.html'), emit: lassosum, optional: true
+    val out
 
     script:
     """
-    Rscript lassosum.R \\ 
-        --bed $bed \\
-        --pheno $pheno \\
-        --cov $cov \\
-        --pcs $pcs \\
-        --ld $ld \\
-        --sum_stats $sum_stats 
+    Rscript /Users/max/Desktop/PRS_Models/nextflow-eval-pipeline/bin/lassosum.R --bed $bed --pheno $pheno --cov $cov --pcs $pcs --sum_stats $sum_stats --out $out
     """
 
 }
