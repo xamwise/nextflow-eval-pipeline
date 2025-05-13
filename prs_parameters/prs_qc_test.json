@@ -113,7 +113,32 @@
         "out": "/Users/max/Desktop/PRS_Models/nextflow-eval-pipeline/data/results/EUR/ldpred2",
         "ld": "/Users/max/Desktop/PRS_Models/nextflow-eval-pipeline/data/supplement_data/LD/map.rds",
         "trait": "quant",
-        "model": "auto"
+        "model": "inf"
+    },
+    "filter_snps":
+    {
+        "input": "/Users/max/Desktop/PRS_Models/nextflow-eval-pipeline/data/qc/EUR.QC",
+        "out": "/Users/max/Desktop/PRS_Models/nextflow-eval-pipeline/data/qc/EUR.QC",
+        "extract": "/Users/max/Desktop/PRS_Models/nextflow-eval-pipeline/data/qc/EUR.snplist"
+    },
+    "filter_participants":
+    {
+        "input": "/Users/max/Desktop/PRS_Models/nextflow-eval-pipeline/data/qc/EUR.QC",
+        "out": "/Users/max/Desktop/PRS_Models/nextflow-eval-pipeline/data/qc/EUR.QC",
+        "keep": "/Users/max/Desktop/PRS_Models/nextflow-eval-pipeline/data/qc/EUR.samples"
+    },
+    "prs_cs_preprocess":
+    {
+        "input": "/Users/max/Desktop/PRS_Models/nextflow-eval-pipeline/data/supplement_data/sum_stats/Height.QC.gz",
+        "out": "/Users/max/Desktop/PRS_Models/nextflow-eval-pipeline/data/supplement_data/sum_stats/Height.prs_cs.txt"
+    },
+    "prs_cs":
+    {
+        "ref_dir": "/Users/max/Desktop/PRS_Models/nextflow-eval-pipeline/data/supplement_data/LD/ldblk_1kg_eur",
+        "bim_prefix": "/Users/max/Desktop/PRS_Models/nextflow-eval-pipeline/data/qc/EUR.QC",
+        "sst_file": "/Users/max/Desktop/PRS_Models/nextflow-eval-pipeline/data/supplement_data/sum_stats/Height.prs_cs.txt",
+        "n_gwas": 20000,
+        "out_dir": "/Users/max/Desktop/PRS_Models/nextflow-eval-pipeline/data/results/EUR"
     }
 
 }

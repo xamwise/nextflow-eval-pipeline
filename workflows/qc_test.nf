@@ -12,6 +12,8 @@ include {lassosum} from '../modules/local/lassosum'
 include {combine_cov} from '../modules/local/combine_cov'
 include {prsice} from '../modules/local/prsice'
 include {ldpred2} from '../modules/local/ldpred2'
+include {prs_cs} from '../modules/local/prs_cs'
+include {prs_cs_preprocess} from '../modules/local/prs_cs_preprocess'
 
 
 workflow {
@@ -27,10 +29,12 @@ workflow {
     pcs(qc_wrap_up.out, params.pcs.out, params.pcs.extract, params.pcs.pca)
 
 
-    //lassosum(qc_wrap_up.out, params.lassosum.pheno, params.lassosum.cov, pcs.out, params.lassosum.sum_stats, params.lassosum.out)
-    combine_cov(params.combine_cov.cov, pcs.out, params.combine_cov.out)
-    //prsice(quality_control_sum.out, params.prsice.pheno, qc_wrap_up.out, combine_cov.out, params.prsice.out, params.prsice.a1, params.prsice.a2, params.prsice.stat, params.prsice.binary_target, params.prsice.base_maf, params.prsice.base_info)
-    ldpred2(qc_wrap_up.out, params.ldpred2.pheno, params.ldpred2.cov, pcs.out, params.ldpred2.ld, quality_control_sum.out, params.ldpred2.trait, params.ldpred2.model, params.ldpred2.out)
+    // lassosum(qc_wrap_up.out, params.lassosum.pheno, params.lassosum.cov, pcs.out, params.lassosum.sum_stats, params.lassosum.out)
+    // combine_cov(params.combine_cov.cov, pcs.out, params.combine_cov.out)
+    // prsice(quality_control_sum.out, params.prsice.pheno, qc_wrap_up.out, combine_cov.out, params.prsice.out, params.prsice.a1, params.prsice.a2, params.prsice.stat, params.prsice.binary_target, params.prsice.base_maf, params.prsice.base_info)
+    // ldpred2(qc_wrap_up.out, params.ldpred2.pheno, params.ldpred2.cov, pcs.out, params.ldpred2.ld, quality_control_sum.out, params.ldpred2.trait, params.ldpred2.model, params.ldpred2.out)
+    prs_cs_preprocess(quality_control_sum.out, params.prs_cs_preprocess.out)
+    prs_cs(params.prs_cs.ref_dir, prs_cs_preprocess.out, params.prs_cs.bim_prefix, params.prs_cs.n_gwas, params.prs_cs.out_dir)
 }
 
 

@@ -79,44 +79,48 @@ process prs_cs {
     publishDir "out/${params.run_id}/prs_cs", mode: 'copy'
 
     input:
-    path ref_dir, path sst_file, path bim_prefix
-    val n_gwas
-    path out_dir
-    val a
-    val b
-    val phi
-    val n_iter
-    val n_burnin 
+    val ref_dir
+    val sst_file
     val bim_prefix
-    val thin
-    val chrom
-    val beta_std
-    val write_psi
-    val write_posterior_samples
-    val seed
+    val n_gwas
+    val out_dir
+    // val a
+    // val b
+    // val phi
+    // val n_iter
+    // val n_burnin 
+    // val bim_prefix
+    // val thin
+    // val chrom
+    // val beta_std
+    // val write_psi
+    // val write_posterior_samples
+    // val seed
 
     output:
     path('prs_cs*.html'), emit: prs_cs, optional: true
 
     script:
     """
-    python PRScs.py \\
+    python /Users/max/Desktop/PRS_Models/nextflow-eval-pipeline/bin/PRScs.py \\
         --ref_dir $ref_dir \\
         --bim_prefix $bim_prefix \\
         --sst_file $sst_file \\
         --n_gwas $n_gwas \\
         --out_dir $out_dir \\
-        [--a $a \\
-        --b $b \\
-        --phi $phi \\
-        --n_iter $n_iter \\
-        --n_burnin $n_burnin \\
-        --thin $thin \\
-        --chrom $chrom \\
-        --beta_std $beta_std \\
-        --write_psi $write_psi \\
-        --write_pst $write_posterior_samples \\
-        --seed $seed]
+   
     """
 
 }
+
+    //  [--a $a \\
+    //     --b $b \\
+    //     --phi $phi \\
+    //     --n_iter $n_iter \\
+    //     --n_burnin $n_burnin \\
+    //     --thin $thin \\
+    //     --chrom $chrom \\
+    //     --beta_std $beta_std \\
+    //     --write_psi $write_psi \\
+    //     --write_pst $write_posterior_samples \\
+    //     --seed $seed]

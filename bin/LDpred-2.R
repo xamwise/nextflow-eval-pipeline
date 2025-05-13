@@ -84,9 +84,11 @@ NCORES <- nb_cores()
 # Open a temporary file
 # split string to get the directory
 # and the file name
-file_dir <- strsplit(opt$bed, ".")[[1]]
+opt$bed
+file_dir <- unlist(strsplit(opt$bed, "[.]"))
+#file_dir[1]
 
-tmp <- tempfile(tmpdir = paste(file_dir, "tmp-data", sep = "/"))
+tmp <- tempfile(tmpdir = paste(file_dir[1], "tmp-data", sep = "/"))
 on.exit(file.remove(paste0(tmp, ".sbk")), add = TRUE)
 # Initialize variables for storing the LD score and LD matrix
 corr <- NULL
@@ -149,6 +151,7 @@ ldsc <- snp_ldsc(   ld,
                     blocks = NULL)
 h2_est <- ldsc[["h2"]]
 
+opt$trait
 
 if (opt$trait == "bin") {
   library(fmsb)
@@ -181,6 +184,7 @@ null.r2 <- fmsb::NagelkerkeR2(null.model)
   stop("Trait type not recognized. Please specify either 'bin' or 'quant'.")
 }
 
+opt$model
 
 if (opt$model == "inf"){
   beta_inf <- snp_ldpred2_inf(corr, df_beta, h2 = h2_est)
